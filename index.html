@@ -1,0 +1,2511 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Sistema de Produtividade</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #a29bfe;
+            --dark-color: #2d3436;
+            --darker-color: #1a1e23;
+            --light-color: #f5f6fa;
+            --accent-color: #fd79a8;
+            --success-color: #00b894;
+            --warning-color: #fdcb6e;
+            --danger-color: #d63031;
+            --info-color: #0984e3;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--dark-color), var(--darker-color));
+            color: var(--light-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Layout Principal */
+        .app-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 2rem 1rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .logo i {
+            font-size: 1.8rem;
+        }
+        
+        .nav-menu {
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            color: var(--light-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background: rgba(108, 92, 231, 0.2);
+            color: var(--primary-color);
+        }
+        
+        .nav-link i {
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+        }
+        
+        /* Conteúdo Principal */
+        .main-content {
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .page-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .theme-selector {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .theme-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .theme-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .theme-default {
+            background: linear-gradient(135deg, #2d3436, #1a1e23);
+        }
+        
+        .theme-warm {
+            background: linear-gradient(135deg, #e17055, #d63031);
+        }
+        
+        .theme-cool {
+            background: linear-gradient(135deg, #0984e3, #00cec9);
+        }
+        
+        .theme-neon {
+            background: linear-gradient(135deg, #6c5ce7, #fd79a8);
+        }
+        
+        /* Cards e Seções */
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .card-title i {
+            font-size: 1.2rem;
+        }
+        
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            border: none;
+            background: var(--primary-color);
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-success {
+            background: var(--success-color);
+        }
+        
+        .btn-danger {
+            background: var(--danger-color);
+        }
+        
+        .btn-warning {
+            background: var(--warning-color);
+            color: var(--dark-color);
+        }
+        
+        /* Formulários e Inputs */
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--light-color);
+            opacity: 0.8;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--light-color);
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.3);
+        }
+        
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        /* Listas e Itens */
+        .item-list {
+            list-style: none;
+        }
+        
+        .list-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .list-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .list-item-content {
+            flex: 1;
+        }
+        
+        .list-item-title {
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+        }
+        
+        .list-item-meta {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        .list-item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--light-color);
+            cursor: pointer;
+            font-size: 1rem;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .action-btn:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Contador Regressivo */
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .countdown-item {
+            text-align: center;
+            min-width: 80px;
+        }
+        
+        .countdown-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.3rem;
+        }
+        
+        .countdown-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+        }
+        
+        /* Progresso */
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+        
+        /* Editor de Código */
+        .code-editor {
+            width: 100%;
+            height: 400px;
+            background: #1e1e1e;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        #editor {
+            width: 100%;
+            height: 100%;
+            border: none;
+            padding: 1rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            color: #f8f8f2;
+            background: #1e1e1e;
+            resize: none;
+            line-height: 1.5;
+            tab-size: 2;
+        }
+        
+        .preview-container {
+            width: 100%;
+            height: 500px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        
+        #preview-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+        }
+        
+        /* Abas */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1rem;
+        }
+        
+        .tab-btn {
+            padding: 0.8rem 1.5rem;
+            background: none;
+            border: none;
+            color: var(--light-color);
+            opacity: 0.7;
+            cursor: pointer;
+            position: relative;
+            font-weight: 500;
+        }
+        
+        .tab-btn.active {
+            opacity: 1;
+            color: var(--primary-color);
+        }
+        
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary-color);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: var(--darker-color);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--light-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            opacity: 1;
+            transform: rotate(90deg);
+        }
+        
+        /* Notificações */
+        .notification {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--success-color);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            z-index: 100;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .notification.error {
+            background: var(--danger-color);
+        }
+        
+        .notification.warning {
+            background: var(--warning-color);
+            color: var(--dark-color);
+        }
+        
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: -250px;
+                width: 250px;
+                height: 100vh;
+                transition: all 0.3s ease;
+                z-index: 100;
+            }
+            
+            .sidebar.active {
+                left: 0;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .countdown {
+                flex-wrap: wrap;
+            }
+            
+            .countdown-item {
+                min-width: 70px;
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .user-menu {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .card {
+                padding: 1rem;
+            }
+            
+            .btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .list-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+            
+            .list-item-actions {
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <i class="fas fa-rocket"></i>
+                <span>SuperSystem</span>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" data-section="dashboard">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="countdown">
+                        <i class="fas fa-clock"></i>
+                        <span>Contador Regressivo</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="notes">
+                        <i class="fas fa-sticky-note"></i>
+                        <span>Anotações</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="tasks">
+                        <i class="fas fa-tasks"></i>
+                        <span>Tarefas</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="code-tester">
+                        <i class="fas fa-code"></i>
+                        <span>Testador de Código</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="files">
+                        <i class="fas fa-folder"></i>
+                        <span>Arquivos</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+        
+        <!-- Conteúdo Principal -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <h1 class="page-title" id="page-title">Dashboard</h1>
+                
+                <div class="user-menu">
+                    <button class="btn btn-secondary" id="mobile-menu-btn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <div class="theme-selector">
+                        <div class="theme-btn theme-default" onclick="changeTheme('default')" title="Tema Padrão"></div>
+                        <div class="theme-btn theme-warm" onclick="changeTheme('warm')" title="Tema Quente"></div>
+                        <div class="theme-btn theme-cool" onclick="changeTheme('cool')" title="Tema Fresco"></div>
+                        <div class="theme-btn theme-neon" onclick="changeTheme('neon')" title="Tema Neon"></div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Seções -->
+            <div class="sections-container">
+                <!-- Dashboard -->
+                <section id="dashboard" class="section active">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-tachometer-alt"></i>
+                                Visão Geral
+                            </h2>
+                        </div>
+                        
+                        <div class="grid-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem;">
+                            <div class="card">
+                                <h3 class="card-title">
+                                    <i class="fas fa-clock"></i>
+                                    Próximo Ano
+                                </h3>
+                                <div id="next-year-countdown"></div>
+                                <div class="progress-container">
+                                    <div class="progress-bar" id="year-progress-bar"></div>
+                                </div>
+                                <p id="year-progress-text" style="font-size: 0.9rem; opacity: 0.8; margin-top: 0.5rem;"></p>
+                            </div>
+                            
+                            <div class="card">
+                                <h3 class="card-title">
+                                    <i class="fas fa-tasks"></i>
+                                    Tarefas
+                                </h3>
+                                <p style="margin-bottom: 1rem;">Você tem <span id="pending-tasks-count" style="color: var(--accent-color); font-weight: bold;">0</span> tarefas pendentes</p>
+                                <button class="btn btn-secondary" onclick="showSection('tasks')">
+                                    <i class="fas fa-arrow-right"></i>
+                                    Ver Tarefas
+                                </button>
+                            </div>
+                            
+                            <div class="card">
+                                <h3 class="card-title">
+                                    <i class="fas fa-sticky-note"></i>
+                                    Anotações
+                                </h3>
+                                <p style="margin-bottom: 1rem;">Você tem <span id="notes-count" style="color: var(--accent-color); font-weight: bold;">0</span> anotações salvas</p>
+                                <button class="btn btn-secondary" onclick="showSection('notes')">
+                                    <i class="fas fa-arrow-right"></i>
+                                    Ver Anotações
+                                </button>
+                            </div>
+                            
+                            <div class="card">
+                                <h3 class="card-title">
+                                    <i class="fas fa-code"></i>
+                                    Projetos de Código
+                                </h3>
+                                <p style="margin-bottom: 1rem;">Você tem <span id="code-projects-count" style="color: var(--accent-color); font-weight: bold;">0</span> projetos salvos</p>
+                                <button class="btn btn-secondary" onclick="showSection('code-tester')">
+                                    <i class="fas fa-arrow-right"></i>
+                                    Testador de Código
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Contador Regressivo -->
+                <section id="countdown" class="section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-clock"></i>
+                                Contador Regressivo
+                            </h2>
+                            <button class="btn" id="add-countdown-btn">
+                                <i class="fas fa-plus"></i>
+                                Novo Contador
+                            </button>
+                        </div>
+                        
+                        <div id="countdown-list">
+                            <!-- Contadores serão adicionados aqui dinamicamente -->
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Anotações -->
+                <section id="notes" class="section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-sticky-note"></i>
+                                Anotações
+                            </h2>
+                            <button class="btn" id="add-note-btn">
+                                <i class="fas fa-plus"></i>
+                                Nova Anotação
+                            </button>
+                        </div>
+                        
+                        <div class="form-group" style="margin-bottom: 2rem;">
+                            <input type="text" id="note-search" placeholder="Buscar anotações...">
+                        </div>
+                        
+                        <ul class="item-list" id="notes-list">
+                            <!-- Anotações serão adicionadas aqui dinamicamente -->
+                        </ul>
+                    </div>
+                </section>
+                
+                <!-- Tarefas -->
+                <section id="tasks" class="section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-tasks"></i>
+                                Lista de Tarefas
+                            </h2>
+                            <button class="btn" id="add-task-btn">
+                                <i class="fas fa-plus"></i>
+                                Nova Tarefa
+                            </button>
+                        </div>
+                        
+                        <div class="tabs">
+                            <button class="tab-btn active" data-tab="all-tasks">Todas</button>
+                            <button class="tab-btn" data-tab="pending-tasks">Pendentes</button>
+                            <button class="tab-btn" data-tab="completed-tasks">Concluídas</button>
+                        </div>
+                        
+                        <div class="tab-content active" id="all-tasks">
+                            <ul class="item-list" id="tasks-list">
+                                <!-- Tarefas serão adicionadas aqui dinamicamente -->
+                            </ul>
+                        </div>
+                        
+                        <div class="tab-content" id="pending-tasks">
+                            <ul class="item-list" id="pending-tasks-list">
+                                <!-- Tarefas pendentes serão adicionadas aqui dinamicamente -->
+                            </ul>
+                        </div>
+                        
+                        <div class="tab-content" id="completed-tasks">
+                            <ul class="item-list" id="completed-tasks-list">
+                                <!-- Tarefas concluídas serão adicionadas aqui dinamicamente -->
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Testador de Código -->
+                <section id="code-tester" class="section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-code"></i>
+                                Testador de Código HTML
+                            </h2>
+                            <div>
+                                <button class="btn btn-secondary" id="save-code-btn">
+                                    <i class="fas fa-save"></i>
+                                    Salvar
+                                </button>
+                                <button class="btn" id="run-code-btn">
+                                    <i class="fas fa-play"></i>
+                                    Executar
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="text" id="code-project-name" placeholder="Nome do projeto">
+                        </div>
+                        
+                        <div class="code-editor">
+                            <textarea id="editor" placeholder="Digite seu código HTML aqui...">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Meu Site&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Bem-vindo ao Meu Site!&lt;/h1&gt;
+    &lt;p&gt;Este é um exemplo de código HTML.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        
+                        <div class="preview-container">
+                            <iframe id="preview-frame"></iframe>
+                        </div>
+                        
+                        <div class="card" style="margin-top: 2rem;">
+                            <div class="card-header">
+                                <h2 class="card-title">
+                                    <i class="fas fa-folder"></i>
+                                    Projetos Salvos
+                                </h2>
+                            </div>
+                            
+                            <ul class="item-list" id="code-projects-list">
+                                <!-- Projetos de código serão adicionados aqui dinamicamente -->
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Arquivos -->
+                <section id="files" class="section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-folder"></i>
+                                Gerenciador de Arquivos
+                            </h2>
+                            <div>
+                                <button class="btn btn-secondary" id="export-all-btn">
+                                    <i class="fas fa-download"></i>
+                                    Exportar Tudo
+                                </button>
+                                <button class="btn" id="import-file-btn">
+                                    <i class="fas fa-upload"></i>
+                                    Importar
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="tabs">
+                            <button class="tab-btn active" data-tab="notes-files">Anotações</button>
+                            <button class="tab-btn" data-tab="tasks-files">Tarefas</button>
+                            <button class="tab-btn" data-tab="code-files">Códigos</button>
+                            <button class="tab-btn" data-tab="countdown-files">Contadores</button>
+                        </div>
+                        
+                        <div class="tab-content active" id="notes-files">
+                            <ul class="item-list" id="notes-files-list">
+                                <!-- Arquivos de anotações serão adicionados aqui dinamicamente -->
+                            </ul>
+                        </div>
+                        
+                        <div class="tab-content" id="tasks-files">
+                            <ul class="item-list" id="tasks-files-list">
+                                <!-- Arquivos de tarefas serão adicionados aqui dinamicamente -->
+                            </ul>
+                        </div>
+                        
+                        <div class="tab-content" id="code-files">
+                            <ul class="item-list" id="code-files-list">
+                                <!-- Arquivos de código serão adicionados aqui dinamicamente -->
+                            </ul>
+                        </div>
+                        
+                        <div class="tab-content" id="countdown-files">
+                            <ul class="item-list" id="countdown-files-list">
+                                <!-- Arquivos de contadores serão adicionados aqui dinamicamente -->
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modais -->
+    <div class="modal" id="countdown-modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('countdown-modal')">&times;</button>
+            <h2 class="card-title">
+                <i class="fas fa-clock"></i>
+                <span id="countdown-modal-title">Novo Contador Regressivo</span>
+            </h2>
+            
+            <form id="countdown-form">
+                <input type="hidden" id="countdown-id">
+                
+                <div class="form-group">
+                    <label for="countdown-name">Nome do Contador</label>
+                    <input type="text" id="countdown-name" placeholder="Ex: Projeto Final, Aniversário, etc." required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="countdown-date">Data Final</label>
+                    <input type="datetime-local" id="countdown-date" required>
+                </div>
+                
+                <button type="submit" class="btn">
+                    <i class="fas fa-save"></i>
+                    Salvar
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="modal" id="note-modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('note-modal')">&times;</button>
+            <h2 class="card-title">
+                <i class="fas fa-sticky-note"></i>
+                <span id="note-modal-title">Nova Anotação</span>
+            </h2>
+            
+            <form id="note-form">
+                <input type="hidden" id="note-id">
+                
+                <div class="form-group">
+                    <label for="note-title">Título</label>
+                    <input type="text" id="note-title" placeholder="Título da anotação" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="note-content">Conteúdo</label>
+                    <textarea id="note-content" placeholder="Digite seu texto aqui..." required></textarea>
+                </div>
+                
+                <button type="submit" class="btn">
+                    <i class="fas fa-save"></i>
+                    Salvar
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="modal" id="task-modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('task-modal')">&times;</button>
+            <h2 class="card-title">
+                <i class="fas fa-tasks"></i>
+                <span id="task-modal-title">Nova Tarefa</span>
+            </h2>
+            
+            <form id="task-form">
+                <input type="hidden" id="task-id">
+                
+                <div class="form-group">
+                    <label for="task-title">Título</label>
+                    <input type="text" id="task-title" placeholder="Título da tarefa" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="task-description">Descrição</label>
+                    <textarea id="task-description" placeholder="Descrição da tarefa"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="task-due-date">Data de Vencimento</label>
+                    <input type="datetime-local" id="task-due-date">
+                </div>
+                
+                <div class="form-group">
+                    <label for="task-priority">Prioridade</label>
+                    <select id="task-priority">
+                        <option value="low">Baixa</option>
+                        <option value="medium" selected>Média</option>
+                        <option value="high">Alta</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn">
+                    <i class="fas fa-save"></i>
+                    Salvar
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="modal" id="import-modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('import-modal')">&times;</button>
+            <h2 class="card-title">
+                <i class="fas fa-upload"></i>
+                Importar Dados
+            </h2>
+            
+            <div class="form-group">
+                <label for="import-type">Tipo de Dados</label>
+                <select id="import-type">
+                    <option value="notes">Anotações</option>
+                    <option value="tasks">Tarefas</option>
+                    <option value="countdowns">Contadores</option>
+                    <option value="code-projects">Projetos de Código</option>
+                    <option value="all">Todos os Dados</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="import-file">Arquivo JSON</label>
+                <input type="file" id="import-file" accept=".json">
+            </div>
+            
+            <button class="btn" id="confirm-import-btn">
+                <i class="fas fa-file-import"></i>
+                Importar
+            </button>
+        </div>
+    </div>
+    
+    <!-- Notificação -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notification-message">Operação realizada com sucesso!</span>
+    </div>
+    
+    <script>
+        // Dados da aplicação
+        let appData = {
+            notes: [],
+            tasks: [],
+            countdowns: [],
+            codeProjects: [],
+            settings: {
+                theme: 'default'
+            }
+        };
+        
+        // Elementos DOM
+        const sidebar = document.getElementById('sidebar');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const sections = document.querySelectorAll('.section');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pageTitle = document.getElementById('page-title');
+        
+        // Carrega os dados salvos
+        function loadData() {
+            const savedData = localStorage.getItem('superSystemData');
+            if (savedData) {
+                appData = JSON.parse(savedData);
+            }
+            
+            updateUI();
+        }
+        
+        // Salva os dados no localStorage
+        function saveData() {
+            localStorage.setItem('superSystemData', JSON.stringify(appData));
+            updateCounters();
+        }
+        
+        // Atualiza a interface com os dados carregados
+        function updateUI() {
+            updateNotesList();
+            updateTasksList();
+            updateCountdownList();
+            updateCodeProjectsList();
+            updateFilesLists();
+            updateCounters();
+            setupNewYearCountdown();
+            
+            // Aplica o tema salvo
+            if (appData.settings.theme) {
+                changeTheme(appData.settings.theme);
+            }
+        }
+        
+        // Atualiza os contadores no dashboard
+        function updateCounters() {
+            document.getElementById('notes-count').textContent = appData.notes.length;
+            document.getElementById('pending-tasks-count').textContent = appData.tasks.filter(task => !task.completed).length;
+            document.getElementById('code-projects-count').textContent = appData.codeProjects.length;
+        }
+        
+        // Mostra uma seção específica
+        function showSection(sectionId) {
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            document.getElementById(sectionId).classList.add('active');
+            document.querySelector(`.nav-link[data-section="${sectionId}"]`).classList.add('active');
+            pageTitle.textContent = document.querySelector(`.nav-link[data-section="${sectionId}"] span`).textContent;
+            
+            // Fecha o menu mobile se estiver aberto
+            sidebar.classList.remove('active');
+        }
+        
+        // Configura o contador para o próximo ano
+        function setupNewYearCountdown() {
+            const currentYear = new Date().getFullYear();
+            const nextYear = currentYear + 1;
+            
+            // Data alvo: 1º de Janeiro do próximo ano
+            const targetDate = new Date(`January 1, ${nextYear} 00:00:00`).getTime();
+            const startDate = new Date(`January 1, ${currentYear} 00:00:00`).getTime();
+            const totalDuration = targetDate - startDate;
+            
+            // Atualiza o contador a cada segundo
+            setInterval(() => {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+                const elapsed = now - startDate;
+                
+                // Cálculos de tempo
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                // Atualiza o elemento HTML
+                document.getElementById('next-year-countdown').innerHTML = `
+                    <div class="countdown">
+                        <div class="countdown-item">
+                            <div class="countdown-value">${days < 10 ? '0' + days : days}</div>
+                            <div class="countdown-label">Dias</div>
+                        </div>
+                        <div class="countdown-item">
+                            <div class="countdown-value">${hours < 10 ? '0' + hours : hours}</div>
+                            <div class="countdown-label">Horas</div>
+                        </div>
+                        <div class="countdown-item">
+                            <div class="countdown-value">${minutes < 10 ? '0' + minutes : minutes}</div>
+                            <div class="countdown-label">Minutos</div>
+                        </div>
+                        <div class="countdown-item">
+                            <div class="countdown-value">${seconds < 10 ? '0' + seconds : seconds}</div>
+                            <div class="countdown-label">Segundos</div>
+                        </div>
+                    </div>
+                `;
+                
+                // Atualiza a barra de progresso
+                const progressPercentage = Math.min(100, Math.max(0, (elapsed / totalDuration) * 100));
+                document.getElementById('year-progress-bar').style.width = `${progressPercentage}%`;
+                document.getElementById('year-progress-text').textContent = 
+                    `${progressPercentage.toFixed(6)}% do tempo até ${nextYear} já passou`;
+            }, 1000);
+        }
+        
+        // Mostra um modal
+        function showModal(modalId, title = '', data = null) {
+            document.getElementById(modalId).style.display = 'flex';
+            document.getElementById(`${modalId}-title`).textContent = title;
+            
+            if (data) {
+                // Preenche o formulário com os dados existentes
+                for (const key in data) {
+                    const input = document.querySelector(`#${modalId} #${key}`);
+                    if (input) {
+                        input.value = data[key];
+                        
+                        // Formata a data para o input datetime-local
+                        if (input.type === 'datetime-local' && data[key]) {
+                            const date = new Date(data[key]);
+                            const formattedDate = date.toISOString().slice(0, 16);
+                            input.value = formattedDate;
+                        }
+                    }
+                }
+            } else {
+                // Limpa o formulário
+                document.querySelector(`#${modalId} form`).reset();
+            }
+        }
+        
+        // Fecha um modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Mostra uma notificação
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.querySelector('#notification-message').textContent = message;
+            
+            notification.className = 'notification';
+            notification.classList.add(type);
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Muda o tema
+        function changeTheme(theme) {
+            const root = document.documentElement;
+            
+            switch(theme) {
+                case 'warm':
+                    root.style.setProperty('--primary-color', '#e17055');
+                    root.style.setProperty('--secondary-color', '#d63031');
+                    root.style.setProperty('--dark-color', '#2d3436');
+                    root.style.setProperty('--darker-color', '#1a1e23');
+                    root.style.setProperty('--light-color', '#f5f6fa');
+                    root.style.setProperty('--accent-color', '#fdcb6e');
+                    break;
+                case 'cool':
+                    root.style.setProperty('--primary-color', '#0984e3');
+                    root.style.setProperty('--secondary-color', '#00cec9');
+                    root.style.setProperty('--dark-color', '#2d3436');
+                    root.style.setProperty('--darker-color', '#1a1e23');
+                    root.style.setProperty('--light-color', '#f5f6fa');
+                    root.style.setProperty('--accent-color', '#a29bfe');
+                    break;
+                case 'neon':
+                    root.style.setProperty('--primary-color', '#6c5ce7');
+                    root.style.setProperty('--secondary-color', '#fd79a8');
+                    root.style.setProperty('--dark-color', '#2d3436');
+                    root.style.setProperty('--darker-color', '#1a1e23');
+                    root.style.setProperty('--light-color', '#f5f6fa');
+                    root.style.setProperty('--accent-color', '#00cec9');
+                    break;
+                default: // default
+                    root.style.setProperty('--primary-color', '#6c5ce7');
+                    root.style.setProperty('--secondary-color', '#a29bfe');
+                    root.style.setProperty('--dark-color', '#2d3436');
+                    root.style.setProperty('--darker-color', '#1a1e23');
+                    root.style.setProperty('--light-color', '#f5f6fa');
+                    root.style.setProperty('--accent-color', '#fd79a8');
+            }
+            
+            // Salva o tema selecionado
+            appData.settings.theme = theme;
+            saveData();
+        }
+        
+        // ====== Funcionalidades de Anotações ======
+        function updateNotesList(searchTerm = '') {
+            const notesList = document.getElementById('notes-list');
+            notesList.innerHTML = '';
+            
+            const filteredNotes = appData.notes.filter(note => 
+                note.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                note.content.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            
+            if (filteredNotes.length === 0) {
+                notesList.innerHTML = '<p style="text-align: center; opacity: 0.7;">Nenhuma anotação encontrada</p>';
+                return;
+            }
+            
+            filteredNotes.forEach(note => {
+                const noteItem = document.createElement('li');
+                noteItem.className = 'list-item';
+                noteItem.innerHTML = `
+                    <div class="list-item-content">
+                        <div class="list-item-title">${note.title}</div>
+                        <div class="list-item-meta">${new Date(note.createdAt).toLocaleString()}</div>
+                    </div>
+                    <div class="list-item-actions">
+                        <button class="action-btn edit-note-btn" data-id="${note.id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-note-btn" data-id="${note.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button class="action-btn export-note-btn" data-id="${note.id}">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                `;
+                notesList.appendChild(noteItem);
+            });
+            
+            // Adiciona eventos aos botões
+            document.querySelectorAll('.edit-note-btn').forEach(btn => {
+                btn.addEventListener('click', () => editNote(btn.dataset.id));
+            });
+            
+            document.querySelectorAll('.delete-note-btn').forEach(btn => {
+                btn.addEventListener('click', () => deleteNote(btn.dataset.id));
+            });
+            
+            document.querySelectorAll('.export-note-btn').forEach(btn => {
+                btn.addEventListener('click', () => exportNote(btn.dataset.id));
+            });
+        }
+        
+        function addNote() {
+            showModal('note-modal', 'Nova Anotação');
+        }
+        
+        function editNote(noteId) {
+            const note = appData.notes.find(n => n.id === noteId);
+            if (note) {
+                showModal('note-modal', 'Editar Anotação', note);
+            }
+        }
+        
+        function deleteNote(noteId) {
+            if (confirm('Tem certeza que deseja excluir esta anotação?')) {
+                appData.notes = appData.notes.filter(n => n.id !== noteId);
+                saveData();
+                updateNotesList();
+                showNotification('Anotação excluída com sucesso!');
+            }
+        }
+        
+        function exportNote(noteId) {
+            const note = appData.notes.find(n => n.id === noteId);
+            if (note) {
+                const blob = new Blob([JSON.stringify(note, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `anotacao-${note.title.toLowerCase().replace(/\s+/g, '-')}.json`;
+                a.click();
+                
+                URL.revokeObjectURL(url);
+                showNotification('Anotação exportada com sucesso!');
+            }
+        }
+        
+        // ====== Funcionalidades de Tarefas ======
+        function updateTasksList() {
+            const allTasksList = document.getElementById('tasks-list');
+            const pendingTasksList = document.getElementById('pending-tasks-list');
+            const completedTasksList = document.getElementById('completed-tasks-list');
+            
+            allTasksList.innerHTML = '';
+            pendingTasksList.innerHTML = '';
+            completedTasksList.innerHTML = '';
+            
+            if (appData.tasks.length === 0) {
+                allTasksList.innerHTML = '<p style="text-align: center; opacity: 0.7;">Nenhuma tarefa encontrada</p>';
+                return;
+            }
+            
+            appData.tasks.forEach(task => {
+                const taskItem = document.createElement('li');
+                taskItem.className = 'list-item';
+                
+                // Formata a data de vencimento
+                let dueDateText = '';
+                if (task.dueDate) {
+                    const dueDate = new Date(task.dueDate);
+                    dueDateText = `Vence em: ${dueDate.toLocaleString()}`;
+                    
+                    // Adiciona classe de alerta se a tarefa estiver atrasada
+                    if (!task.completed && dueDate < new Date()) {
+                        taskItem.style.borderLeft = '4px solid var(--danger-color)';
+                    }
+                }
+                
+                taskItem.innerHTML = `
+                    <div class="list-item-content">
+                        <div style="display: flex; align-items: center; gap: 0.8rem;">
+                            <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} data-id="${task.id}">
+                            <div>
+                                <div class="list-item-title" style="${task.completed ? 'text-decoration: line-through; opacity: 0.7;' : ''}">${task.title}</div>
+                                <div class="list-item-meta">
+                                    ${task.description ? task.description + ' • ' : ''}
+                                    ${dueDateText}
+                                    ${task.priority ? ' • Prioridade: ' + (task.priority === 'high' ? 'Alta' : task.priority === 'medium' ? 'Média' : 'Baixa') : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-item-actions">
+                        <button class="action-btn edit-task-btn" data-id="${task.id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-task-btn" data-id="${task.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                allTasksList.appendChild(taskItem.cloneNode(true));
+                
+                if (task.completed) {
+                    completedTasksList.appendChild(taskItem);
+                } else {
+                    pendingTasksList.appendChild(taskItem);
+                }
+            });
+            
+            // Adiciona eventos aos botões
+            document.querySelectorAll('.edit-task-btn').forEach(btn => {
+                btn.addEventListener('click', () => editTask(btn.dataset.id));
+            });
+            
+            document.querySelectorAll('.delete-task-btn').forEach(btn => {
+                btn.addEventListener('click', () => deleteTask(btn.dataset.id));
+            });
+            
+            document.querySelectorAll('.task-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', () => toggleTaskComplete(checkbox.dataset.id, checkbox.checked));
+            });
+        }
+        
+        function addTask() {
+            showModal('task-modal', 'Nova Tarefa');
+        }
+        
+        function editTask(taskId) {
+            const task = appData.tasks.find(t => t.id === taskId);
+            if (task) {
+                showModal('task-modal', 'Editar Tarefa', task);
+            }
+        }
+        
+        function deleteTask(taskId) {
+            if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
+                appData.tasks = appData.tasks.filter(t => t.id !== taskId);
+                saveData();
+                updateTasksList();
+                showNotification('Tarefa excluída com sucesso!');
+            }
+        }
+        
+        function toggleTaskComplete(taskId, completed) {
+            const task = appData.tasks.find(t => t.id === taskId);
+            if (task) {
+                task.completed = completed;
+                task.completedAt = completed ? new Date().toISOString() : null;
+                saveData();
+                updateTasksList();
+                
+                showNotification(`Tarefa marcada como ${completed ? 'concluída' : 'pendente'}!`);
+            }
+        }
+        
+        // ====== Funcionalidades de Contador Regressivo ======
+        function updateCountdownList() {
+            const countdownList = document.getElementById('countdown-list');
+            countdownList.innerHTML = '';
+            
+            if (appData.countdowns.length === 0) {
+                countdownList.innerHTML = '<p style="text-align: center; opacity: 0.7;">Nenhum contador regressivo criado</p>';
+                return;
+            }
+            
+            appData.countdowns.forEach(countdown => {
+                const countdownItem = document.createElement('div');
+                countdownItem.className = 'card';
+                countdownItem.style.marginBottom = '1rem';
+                countdownItem.innerHTML = `
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-clock"></i>
+                            ${countdown.name}
+                        </h3>
+                        <div>
+                            <button class="btn btn-secondary edit-countdown-btn" data-id="${countdown.id}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger delete-countdown-btn" data-id="${countdown.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="countdown-container" id="countdown-${countdown.id}">
+                        <div class="countdown">
+                            <div class="countdown-item">
+                                <div class="countdown-value" id="days-${countdown.id}">00</div>
+                                <div class="countdown-label">Dias</div>
+                            </div>
+                            <div class="countdown-item">
+                                <div class="countdown-value" id="hours-${countdown.id}">00</div>
+                                <div class="countdown-label">Horas</div>
+                            </div>
+                            <div class="countdown-item">
+                                <div class="countdown-value" id="minutes-${countdown.id}">00</div>
+                                <div class="countdown-label">Minutos</div>
+                            </div>
+                            <div class="countdown-item">
+                                <div class="countdown-value" id="seconds-${countdown.id}">00</div>
+                                <div class="countdown-label">Segundos</div>
+                            </div>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" id="progress-bar-${countdown.id}"></div>
+                        </div>
+                        <div class="progress-text" id="progress-text-${countdown.id}"></div>
+                    </div>
+                `;
+                countdownList.appendChild(countdownItem);
+                
+                // Inicia o contador
+                startCountdown(countdown);
+            });
+            
+            // Adiciona eventos aos botões
+            document.querySelectorAll('.edit-countdown-btn').forEach(btn => {
+                btn.addEventListener('click', () => editCountdown(btn.dataset.id));
+            });
+            
+            document.querySelectorAll('.delete-countdown-btn').forEach(btn => {
+                btn.addEventListener('click', () => deleteCountdown(btn.dataset.id));
+            });
+        }
+        
+        function addCountdown() {
+            showModal('countdown-modal', 'Novo Contador Regressivo');
+        }
+        
+        function editCountdown(countdownId) {
+            const countdown = appData.countdowns.find(c => c.id === countdownId);
+            if (countdown) {
+                showModal('countdown-modal', 'Editar Contador', countdown);
+            }
+        }
+        
+        function deleteCountdown(countdownId) {
+            if (confirm('Tem certeza que deseja excluir este contador regressivo?')) {
+                appData.countdowns = appData.countdowns.filter(c => c.id !== countdownId);
+                saveData();
+                updateCountdownList();
+                showNotification('Contador regressivo excluído com sucesso!');
+            }
+        }
+        
+        function startCountdown(countdown) {
+            const targetDate = new Date(countdown.targetDate).getTime();
+            const startDate = new Date(countdown.createdAt).getTime();
+            const totalDuration = targetDate - startDate;
+            
+            const interval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+                const elapsed = now - startDate;
+                
+                // Se o tempo acabou
+                if (distance < 0) {
+                    clearInterval(interval);
+                    
+                    // Atualiza os elementos para 00
+                    document.getElementById(`days-${countdown.id}`).textContent = '00';
+                    document.getElementById(`hours-${countdown.id}`).textContent = '00';
+                    document.getElementById(`minutes-${countdown.id}`).textContent = '00';
+                    document.getElementById(`seconds-${countdown.id}`).textContent = '00';
+                    
+                    document.getElementById(`progress-bar-${countdown.id}`).style.width = '100%';
+                    document.getElementById(`progress-text-${countdown.id}`).textContent = 'O tempo acabou!';
+                    
+                    // Toca o som de conclusão
+                    const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3');
+                    audio.play();
+                    
+                    return;
+                }
+                
+                // Cálculos de tempo
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                // Atualiza os elementos HTML
+                document.getElementById(`days-${countdown.id}`).textContent = days < 10 ? '0' + days : days;
+                document.getElementById(`hours-${countdown.id}`).textContent = hours < 10 ? '0' + hours : hours;
+                document.getElementById(`minutes-${countdown.id}`).textContent = minutes < 10 ? '0' + minutes : minutes;
+                document.getElementById(`seconds-${countdown.id}`).textContent = seconds < 10 ? '0' + seconds : seconds;
+                
+                // Atualiza a barra de progresso
+                const progressPercentage = Math.min(100, Math.max(0, (elapsed / totalDuration) * 100));
+                document.getElementById(`progress-bar-${countdown.id}`).style.width = `${progressPercentage}%`;
+                document.getElementById(`progress-text-${countdown.id}`).textContent = 
+                    `${progressPercentage.toFixed(2)}% do tempo total já passou`;
+            }, 1000);
+        }
+        
+        // ====== Funcionalidades de Testador de Código ======
+        function updateCodeProjectsList() {
+            const codeProjectsList = document.getElementById('code-projects-list');
+            codeProjectsList.innerHTML = '';
+            
+            if (appData.codeProjects.length === 0) {
+                codeProjectsList.innerHTML = '<p style="text-align: center; opacity: 0.7;">Nenhum projeto de código salvo</p>';
+                return;
+            }
+            
+            appData.codeProjects.forEach(project => {
+                const projectItem = document.createElement('li');
+                projectItem.className = 'list-item';
+                projectItem.innerHTML = `
+                    <div class="list-item-content">
+                        <div class="list-item-title">${project.name}</div>
+                        <div class="list-item-meta">Salvo em: ${new Date(project.createdAt).toLocaleString()}</div>
+                    </div>
+                    <div class="list-item-actions">
+                        <button class="action-btn load-code-btn" data-id="${project.id}">
+                            <i class="fas fa-code"></i>
+                        </button>
+                        <button class="action-btn delete-code-btn" data-id="${project.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button class="action-btn export-code-btn" data-id="${project.id}">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                `;
+                codeProjectsList.appendChild(projectItem);
+            });
+            
+            // Adiciona eventos aos botões
+            document.querySelectorAll('.load-code-btn').forEach(btn => {
+                btn.addEventListener('click', () => loadCodeProject(btn.dataset.id));
+            });
+            
+            document.querySelectorAll('.delete-code-btn').forEach(btn => {
+                btn.addEventListener('click', () => deleteCodeProject(btn.dataset.id));
+            });
+            
+            document.querySelectorAll('.export-code-btn').forEach(btn => {
+                btn.addEventListener('click', () => exportCodeProject(btn.dataset.id));
+            });
+        }
+        
+        function saveCodeProject() {
+            const projectName = document.getElementById('code-project-name').value.trim();
+            const code = document.getElementById('editor').value;
+            
+            if (!projectName || !code) {
+                showNotification('Por favor, preencha o nome do projeto e o código', 'error');
+                return;
+            }
+            
+            const project = {
+                id: 'code-' + Date.now(),
+                name: projectName,
+                code: code,
+                createdAt: new Date().toISOString()
+            };
+            
+            appData.codeProjects.push(project);
+            saveData();
+            updateCodeProjectsList();
+            
+            document.getElementById('code-project-name').value = '';
+            showNotification('Projeto de código salvo com sucesso!');
+        }
+        
+        function loadCodeProject(projectId) {
+            const project = appData.codeProjects.find(p => p.id === projectId);
+            if (project) {
+                document.getElementById('editor').value = project.code;
+                document.getElementById('code-project-name').value = project.name;
+                showNotification('Projeto carregado com sucesso!');
+            }
+        }
+        
+        function deleteCodeProject(projectId) {
+            if (confirm('Tem certeza que deseja excluir este projeto de código?')) {
+                appData.codeProjects = appData.codeProjects.filter(p => p.id !== projectId);
+                saveData();
+                updateCodeProjectsList();
+                showNotification('Projeto de código excluído com sucesso!');
+            }
+        }
+        
+        function exportCodeProject(projectId) {
+            const project = appData.codeProjects.find(p => p.id === projectId);
+            if (project) {
+                const blob = new Blob([project.code], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `projeto-${project.name.toLowerCase().replace(/\s+/g, '-')}.html`;
+                a.click();
+                
+                URL.revokeObjectURL(url);
+                showNotification('Projeto exportado com sucesso!');
+            }
+        }
+        
+        function runCode() {
+            const code = document.getElementById('editor').value;
+            const previewFrame = document.getElementById('preview-frame');
+            const previewDocument = previewFrame.contentDocument || previewFrame.contentWindow.document;
+            
+            previewDocument.open();
+            previewDocument.write(code);
+            previewDocument.close();
+        }
+        
+        // ====== Funcionalidades de Arquivos ======
+        function updateFilesLists() {
+            updateNotesFilesList();
+            updateTasksFilesList();
+            updateCodeFilesList();
+            updateCountdownFilesList();
+        }
+        
+        function updateNotesFilesList() {
+            const list = document.getElementById('notes-files-list');
+            list.innerHTML = '';
+            
+            if (appData.notes.length === 0) {
+                list.innerHTML = '<p style="text-align: center; opacity: 0.7;">Nenhuma anotação para exportar</p>';
+                return;
+            }
+            
+            appData.notes.forEach(note => {
+                const item = document.createElement('li');
+                item.className = 'list-item';
+                item.innerHTML = `
+                    <div class="list-item-content">
+                        <div class="list-item-title">${note.title}</div>
+                        <div class="list-item-meta">${new Date(note.createdAt).toLocaleString()}</div>
+                    </div>
+                    <div class="list-item-actions">
+                        <button class="action-btn export-note-file-btn" data-id="${note.id}">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+            
+            document.querySelectorAll('.export-note-file-btn').forEach(btn => {
+                btn.addEventListener('click', () => exportNote(btn.dataset.id));
+            });
+        }
+        
+        function updateTasksFilesList() {
+            const list = document.getElementById('tasks-files-list');
+            list.innerHTML = '';
+            
+            if (appData.tasks.length === 0) {
+                list.innerHTML = '<p style="text-align: center; opacity: 0.7;">Nenhuma tarefa para exportar</p>';
+                return;
+            }
+            
+            appData.tasks.forEach(task => {
+                const item = document.createElement('li');
+                item.className = 'list-item';
+                item.innerHTML = `
+                    <div class="list-item-content">
+                        <div class="list-item-title">${task.title}</div>
+                        <div class="list-item-meta">${task.dueDate ? 'Vence em: ' + new Date(task.dueDate).toLocaleString() : 'Sem data de vencimento'}</div>
+                    </div>
+                    <div class="list-item-actions">
+                        <button class="action-btn export-task-file-btn" data-id="${task.id}">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+            
+            document.querySelectorAll('.export-task-file-btn').forEach(btn => {
+                btn.addEventListener('click', () => exportTask(btn.dataset.id));
+            });
+        }
+        
+        function updateCodeFilesList() {
+            const list = document.getElementById('code-files-list');
+            list.innerHTML = '';
+            
+            if (appData.codeProjects.length === 0) {
+                list.innerHTML = '<p style="text-align: center; opacity: 0.7;">Nenhum projeto de código para exportar</p>';
+                return;
+            }
+            
+            appData.codeProjects.forEach(project => {
+                const item = document.createElement('li');
+                item.className = 'list-item';
+                item.innerHTML = `
+                    <div class="list-item-content">
+                        <div class="list-item-title">${project.name}</div>
+                        <div class="list-item-meta">Salvo em: ${new Date(project.createdAt).toLocaleString()}</div>
+                    </div>
+                    <div class="list-item-actions">
+                        <button class="action-btn export-code-file-btn" data-id="${project.id}">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+            
+            document.querySelectorAll('.export-code-file-btn').forEach(btn => {
+                btn.addEventListener('click', () => exportCodeProject(btn.dataset.id));
+            });
+        }
+        
+        function updateCountdownFilesList() {
+            const list = document.getElementById('countdown-files-list');
+            list.innerHTML = '';
+            
+            if (appData.countdowns.length === 0) {
+                list.innerHTML = '<p style="text-align: center; opacity: 0.7;">Nenhum contador para exportar</p>';
+                return;
+            }
+            
+            appData.countdowns.forEach(countdown => {
+                const item = document.createElement('li');
+                item.className = 'list-item';
+                item.innerHTML = `
+                    <div class="list-item-content">
+                        <div class="list-item-title">${countdown.name}</div>
+                        <div class="list-item-meta">Termina em: ${new Date(countdown.targetDate).toLocaleString()}</div>
+                    </div>
+                    <div class="list-item-actions">
+                        <button class="action-btn export-countdown-file-btn" data-id="${countdown.id}">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+            
+            document.querySelectorAll('.export-countdown-file-btn').forEach(btn => {
+                btn.addEventListener('click', () => exportCountdown(btn.dataset.id));
+            });
+        }
+        
+        function exportTask(taskId) {
+            const task = appData.tasks.find(t => t.id === taskId);
+            if (task) {
+                const blob = new Blob([JSON.stringify(task, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `tarefa-${task.title.toLowerCase().replace(/\s+/g, '-')}.json`;
+                a.click();
+                
+                URL.revokeObjectURL(url);
+                showNotification('Tarefa exportada com sucesso!');
+            }
+        }
+        
+        function exportCountdown(countdownId) {
+            const countdown = appData.countdowns.find(c => c.id === countdownId);
+            if (countdown) {
+                const blob = new Blob([JSON.stringify(countdown, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `contador-${countdown.name.toLowerCase().replace(/\s+/g, '-')}.json`;
+                a.click();
+                
+                URL.revokeObjectURL(url);
+                showNotification('Contador exportado com sucesso!');
+            }
+        }
+        
+        function exportAllData() {
+            const dataToExport = {
+                notes: appData.notes,
+                tasks: appData.tasks,
+                countdowns: appData.countdowns,
+                codeProjects: appData.codeProjects,
+                exportedAt: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(dataToExport, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `super-system-backup-${new Date().toISOString().slice(0, 10)}.json`;
+            a.click();
+            
+            URL.revokeObjectURL(url);
+            showNotification('Todos os dados exportados com sucesso!');
+        }
+        
+        function importData() {
+            showModal('import-modal');
+        }
+        
+        function confirmImport() {
+            const importType = document.getElementById('import-type').value;
+            const fileInput = document.getElementById('import-file');
+            
+            if (fileInput.files.length === 0) {
+                showNotification('Por favor, selecione um arquivo para importar', 'error');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (importType === 'all') {
+                        // Verifica se o arquivo tem a estrutura completa
+                        if (data.notes && data.tasks && data.countdowns && data.codeProjects) {
+                            appData.notes = data.notes;
+                            appData.tasks = data.tasks;
+                            appData.countdowns = data.countdowns;
+                            appData.codeProjects = data.codeProjects;
+                            showNotification('Todos os dados importados com sucesso!');
+                        } else {
+                            showNotification('Arquivo inválido para importação completa', 'error');
+                            return;
+                        }
+                    } else {
+                        // Importação específica
+                        if (importType === 'notes' && Array.isArray(data)) {
+                            appData.notes = [...appData.notes, ...data];
+                            showNotification(`${data.length} anotações importadas com sucesso!`);
+                        } 
+                        else if (importType === 'tasks' && Array.isArray(data)) {
+                            appData.tasks = [...appData.tasks, ...data];
+                            showNotification(`${data.length} tarefas importadas com sucesso!`);
+                        }
+                        else if (importType === 'countdowns' && Array.isArray(data)) {
+                            appData.countdowns = [...appData.countdowns, ...data];
+                            showNotification(`${data.length} contadores importados com sucesso!`);
+                        }
+                        else if (importType === 'code-projects' && Array.isArray(data)) {
+                            appData.codeProjects = [...appData.codeProjects, ...data];
+                            showNotification(`${data.length} projetos de código importados com sucesso!`);
+                        }
+                        else {
+                            showNotification('Arquivo inválido para o tipo selecionado', 'error');
+                            return;
+                        }
+                    }
+                    
+                    saveData();
+                    closeModal('import-modal');
+                    fileInput.value = '';
+                } catch (error) {
+                    showNotification('Erro ao ler o arquivo. Certifique-se de que é um JSON válido.', 'error');
+                    console.error(error);
+                }
+            };
+            
+            reader.readAsText(file);
+        }
+        
+        // ====== Event Listeners ======
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            
+            // Navegação
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showSection(link.dataset.section);
+                });
+            });
+            
+            // Menu mobile
+            mobileMenuBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+            });
+            
+            // Abas
+            document.querySelectorAll('.tab-btn').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.dataset.tab;
+                    const tabContainer = tab.parentElement.parentElement;
+                    
+                    // Ativa a aba clicada
+                    tabContainer.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+                    tabContainer.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    tabContainer.querySelector(`#${tabId}`).classList.add('active');
+                });
+            });
+            
+            // Formulário de anotações
+            document.getElementById('note-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const noteId = document.getElementById('note-id').value;
+                const title = document.getElementById('note-title').value;
+                const content = document.getElementById('note-content').value;
+                
+                if (noteId) {
+                    // Editar anotação existente
+                    const noteIndex = appData.notes.findIndex(n => n.id === noteId);
+                    if (noteIndex !== -1) {
+                        appData.notes[noteIndex] = {
+                            ...appData.notes[noteIndex],
+                            title,
+                            content,
+                            updatedAt: new Date().toISOString()
+                        };
+                        showNotification('Anotação atualizada com sucesso!');
+                    }
+                } else {
+                    // Nova anotação
+                    const note = {
+                        id: 'note-' + Date.now(),
+                        title,
+                        content,
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                    };
+                    appData.notes.push(note);
+                    showNotification('Anotação criada com sucesso!');
+                }
+                
+                saveData();
+                closeModal('note-modal');
+            });
+            
+            // Formulário de tarefas
+            document.getElementById('task-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const taskId = document.getElementById('task-id').value;
+                const title = document.getElementById('task-title').value;
+                const description = document.getElementById('task-description').value;
+                const dueDate = document.getElementById('task-due-date').value;
+                const priority = document.getElementById('task-priority').value;
+                
+                if (taskId) {
+                    // Editar tarefa existente
+                    const taskIndex = appData.tasks.findIndex(t => t.id === taskId);
+                    if (taskIndex !== -1) {
+                        appData.tasks[taskIndex] = {
+                            ...appData.tasks[taskIndex],
+                            title,
+                            description,
+                            dueDate: dueDate ? new Date(dueDate).toISOString() : null,
+                            priority,
+                            updatedAt: new Date().toISOString()
+                        };
+                        showNotification('Tarefa atualizada com sucesso!');
+                    }
+                } else {
+                    // Nova tarefa
+                    const task = {
+                        id: 'task-' + Date.now(),
+                        title,
+                        description,
+                        dueDate: dueDate ? new Date(dueDate).toISOString() : null,
+                        priority,
+                        completed: false,
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                    };
+                    appData.tasks.push(task);
+                    showNotification('Tarefa criada com sucesso!');
+                }
+                
+                saveData();
+                closeModal('task-modal');
+            });
+            
+            // Formulário de contador regressivo
+            document.getElementById('countdown-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const countdownId = document.getElementById('countdown-id').value;
+                const name = document.getElementById('countdown-name').value;
+                const targetDate = document.getElementById('countdown-date').value;
+                
+                if (countdownId) {
+                    // Editar contador existente
+                    const countdownIndex = appData.countdowns.findIndex(c => c.id === countdownId);
+                    if (countdownIndex !== -1) {
+                        appData.countdowns[countdownIndex] = {
+                            ...appData.countdowns[countdownIndex],
+                            name,
+                            targetDate: new Date(targetDate).toISOString(),
+                            updatedAt: new Date().toISOString()
+                        };
+                        showNotification('Contador atualizado com sucesso!');
+                    }
+                } else {
+                    // Novo contador
+                    const countdown = {
+                        id: 'countdown-' + Date.now(),
+                        name,
+                        targetDate: new Date(targetDate).toISOString(),
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                    };
+                    appData.countdowns.push(countdown);
+                    showNotification('Contador criado com sucesso!');
+                }
+                
+                saveData();
+                closeModal('countdown-modal');
+            });
+            
+            // Botões de ação
+            document.getElementById('add-note-btn').addEventListener('click', addNote);
+            document.getElementById('add-task-btn').addEventListener('click', addTask);
+            document.getElementById('add-countdown-btn').addEventListener('click', addCountdown);
+            document.getElementById('save-code-btn').addEventListener('click', saveCodeProject);
+            document.getElementById('run-code-btn').addEventListener('click', runCode);
+            document.getElementById('export-all-btn').addEventListener('click', exportAllData);
+            document.getElementById('import-file-btn').addEventListener('click', importData);
+            document.getElementById('confirm-import-btn').addEventListener('click', confirmImport);
+            
+            // Busca de anotações
+            document.getElementById('note-search').addEventListener('input', (e) => {
+                updateNotesList(e.target.value);
+            });
+        });
+    </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Sistema de Produtividade</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --dark-color: #2d3436;
+            --light-color: #f5f6fa;
+        }
+
+        /* [Seu CSS existente permanece aqui] */
+        
+        /* Novas abas */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--primary-color);
+            margin: 1rem 0;
+        }
+        
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            color: #777;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Editor HTML */
+        .editor-container {
+            display: flex;
+            gap: 1rem;
+            height: 400px;
+            margin-bottom: 1rem;
+        }
+        
+        #html-code {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 2px solid var(--primary-color);
+            font-family: 'Courier New', monospace;
+            background: #2d3436;
+            color: white;
+            resize: none;
+        }
+        
+        .editor-preview {
+            flex: 1;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+        }
+        
+        #preview-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .editor-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Salvador de Links */
+        .link-saver {
+            margin-top: 1.5rem;
+        }
+        
+        .link-form {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .link-form input {
+            flex: 1;
+            padding: 0.5rem;
+            border-radius: 8px;
+            border: 2px solid var(--primary-color);
+        }
+        
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .link-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .link-card h3 {
+            margin: 0 0 0.5rem 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .link-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        /* [Seus outros estilos permanecem aqui] */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Abas principais -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="editor">Editor HTML</button>
+            <button class="tab-btn" data-tab="links">Links Salvos</button>
+            <button class="tab-btn" data-tab="apps">Meus Apps</button>
+        </div>
+
+        <!-- Editor HTML -->
+        <div class="tab-content active" id="editor">
+            <div class="editor-container">
+                <textarea id="html-code" placeholder="Digite seu HTML aqui..."></textarea>
+                <div class="editor-preview">
+                    <iframe id="preview-frame"></iframe>
+                </div>
+            </div>
+            <div class="editor-actions">
+                <button class="btn" id="run-code-btn">
+                    <i class="fas fa-play"></i> Executar
+                </button>
+                <button class="btn" id="save-as-app-btn">
+                    <i class="fas fa-plus"></i> Criar App
+                </button>
+                <button class="btn btn-secondary" id="clear-code-btn">
+                    <i class="fas fa-trash"></i> Limpar
+                </button>
+            </div>
+        </div>
+
+        <!-- Salvador de Links -->
+        <div class="tab-content" id="links">
+            <div class="link-saver">
+                <div class="link-form">
+                    <input type="text" id="link-name" placeholder="Nome do link">
+                    <input type="url" id="link-url" placeholder="https://...">
+                    <button class="btn" id="save-link-btn">
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
+                </div>
+                <div class="links-grid" id="links-grid">
+                    <!-- Links salvos aparecerão aqui -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Apps Salvos (seção existente) -->
+        <div class="tab-content" id="apps">
+            <div class="apps-container" id="apps-container">
+                <!-- Seus apps salvos aparecerão aqui -->
+            </div>
+            <button class="btn" onclick="addNewApp()" style="margin-top: 1rem;">
+                <i class="fas fa-plus"></i> Adicionar App
+            </button>
+        </div>
+    </div>
+
+    <!-- [Seus modais existentes permanecem aqui] -->
+
+    <script>
+        // Dados globais
+        let appData = {
+            savedApps: [],
+            savedLinks: []
+        };
+
+        // Carrega dados salvos
+        function loadData() {
+            const saved = localStorage.getItem('productivityData');
+            if (saved) {
+                appData = JSON.parse(saved);
+                updateAppsList();
+                updateLinksList();
+            }
+        }
+
+        // Salva todos os dados
+        function saveData() {
+            localStorage.setItem('productivityData', JSON.stringify(appData));
+        }
+
+        // ===== EDITOR HTML =====
+        document.getElementById('run-code-btn').addEventListener('click', () => {
+            const html = document.getElementById('html-code').value;
+            const iframe = document.getElementById('preview-frame');
+            iframe.srcdoc = html;
+        });
+
+        document.getElementById('save-as-app-btn').addEventListener('click', () => {
+            const html = document.getElementById('html-code').value;
+            if (!html.trim()) return alert('Digite algum código HTML primeiro!');
+            
+            document.getElementById('app-url').value = html;
+            document.getElementById('app-name').value = 'Meu Projeto HTML';
+            addNewApp();
+        });
+
+        document.getElementById('clear-code-btn').addEventListener('click', () => {
+            document.getElementById('html-code').value = '';
+            document.getElementById('preview-frame').srcdoc = '';
+        });
+
+        // ===== SALVADOR DE LINKS =====
+        document.getElementById('save-link-btn').addEventListener('click', () => {
+            const name = document.getElementById('link-name').value;
+            const url = document.getElementById('link-url').value;
+            
+            if (!name || !url) return alert('Preencha todos os campos!');
+            
+            appData.savedLinks.push({
+                id: 'link-' + Date.now(),
+                name,
+                url,
+                createdAt: new Date().toISOString()
+            });
+            
+            saveData();
+            updateLinksList();
+            
+            // Limpa os campos
+            document.getElementById('link-name').value = '';
+            document.getElementById('link-url').value = '';
+        });
+
+        function updateLinksList() {
+            const grid = document.getElementById('links-grid');
+            grid.innerHTML = '';
+            
+            if (appData.savedLinks.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; opacity: 0.7;">Nenhum link salvo ainda</p>';
+                return;
+            }
+            
+            appData.savedLinks.forEach(link => {
+                const card = document.createElement('div');
+                card.className = 'link-card';
+                card.innerHTML = `
+                    <h3>${link.name}</h3>
+                    <p style="opacity: 0.7; font-size: 0.9rem;">${link.url}</p>
+                    <div class="link-actions">
+                        <button class="btn btn-small" onclick="window.open('${link.url}', '_blank')">
+                            <i class="fas fa-external-link-alt"></i>
+                        </button>
+                        <button class="btn btn-small btn-secondary" onclick="deleteLink('${link.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function deleteLink(id) {
+            appData.savedLinks = appData.savedLinks.filter(link => link.id !== id);
+            saveData();
+            updateLinksList();
+        }
+
+        // ===== APPS SALVOS (seu código existente) =====
+        // [Seu código para apps salvos permanece aqui]
+
+        // ===== CONTROLE DAS ABAS =====
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn, .tab-content').forEach(el => {
+                    el.classList.remove('active');
+                });
+                btn.classList.add('active');
+                document.getElementById(btn.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            
+            // Seu código de inicialização existente
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+            
+            document.querySelectorAll('.icon-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.icon-option').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+            
+            document.getElementById('app-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveApp();
+            });
+        });
+    </script>
+</body>
+</html>
